@@ -53,7 +53,7 @@ connectDB().then(() => {
   client.login(process.env.DISCORD_TOKEN);
 });
 
-client.once('ready', () => {
+client.once('clientReady', () => { ... });
   console.log(`✅ ${client.user.tag} online`);
   // Opcional: registrar comandos aqui se necessário
 });
