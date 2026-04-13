@@ -13,7 +13,6 @@ const client = new Client({
   ]
 });
 
-// Carregar Comandos
 client.commands = new Map();
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -23,11 +22,11 @@ for (const file of commandFiles) {
   const command = require(filePath);
   if ('data' in command && 'execute' in command) {
     client.commands.set(command.data.name, command);
+    console.log(`📌 Comando carregado: /${command.data.name}`);
   }
 }
 
-// Eventos
-client.once('ready', () => {
+client.once('clientReady', () => {
   console.log(`✅ Bot online: ${client.user.tag}`);
 });
 
@@ -41,9 +40,14 @@ client.on('interactionCreate', async interaction => {
     await command.execute(interaction);
   } catch (error) {
     console.error(error);
-    const msg = interaction.replied || interaction.deferred 
-      ? { content: '❌ Erro ao executar comando.', ephemeral: true }
-      : { content: '❌ Erro ao executar comando.', ephemeral: true };
-    await interaction.reply(msg).catch(() => {});
+    await interaction.reply({ content: '❌ Erro ao executar comando.', ephemeral: true }).catch(() => {});
   }
+});
+
+// Inicia MongoDB e depois o bot
+connectDB().then(() => {
+  client.login(process.env.DISCORD_TOKEN);
+}).catch(err => {
+  console.error('Falha ao iniciar:', err);
+  process.exit(1);
 });
