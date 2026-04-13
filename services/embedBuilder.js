@@ -47,7 +47,7 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
       },
       {
         name: '<a:1276588157927952486:1489752367074246836> Script Loader',
-        value: '`•` Link Coming soon',
+        value: '```• Link Coming soon```',
         inline: false,
       }
     )
@@ -135,7 +135,7 @@ function buildUpdateEmbed({ script, description, user }) {
       },
       {
         name: '<a:1276588157927952486:1489752367074246836> Script Loader',
-        value: '`•` Link Coming soon',
+        value: '```• Link Coming soon```',
         inline: false,
       }
     )
