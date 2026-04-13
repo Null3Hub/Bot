@@ -52,7 +52,7 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
       }
     )
     .setFooter({
-      text: `<a:Amarelo:1489753598681415700> Null Hub • Script Added`,
+      text: `📦 Null Hub • New Script Added`
       iconURL: user?.displayAvatarURL?.(),
     })
     .setTimestamp();
@@ -92,7 +92,7 @@ function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
       }
     )
     .setFooter({
-      text: `<a:Amarelo:1489753598681415700> Null Hub • Script Status Changed`,
+      text: `📡 Null Hub • Script Status Updated`
       iconURL: user?.displayAvatarURL?.(),
     })
     .setTimestamp();
@@ -140,7 +140,7 @@ function buildUpdateEmbed({ script, description, user }) {
       }
     )
     .setFooter({
-      text: `<a:Amarelo:1489753598681415700> Null Hub • Patch Notes -> Script Updated`,
+      text: `📢 Null Hub • Patch Notes → Re-Exec to update to the latest version`
       iconURL: user?.displayAvatarURL?.(),
     })
     .setTimestamp();
