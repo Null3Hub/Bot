@@ -53,7 +53,61 @@ connectDB().then(() => {
   client.login(process.env.DISCORD_TOKEN);
 });
 
-// ✅ Correto (substitua por isso):
+// bot/index.js
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { connectDB } = require('../services/mongo');
+const config = require('../config/env');
+const fs = require('fs');
+const path = require('path');
+
+// Mantém o processo vivo e loga erros críticos
+process.on('unhandledRejection', err => console.error('❌ Unhandled Rejection:', err));
+process.on('uncaughtException', err => { console.error('❌ Uncaught Exception:', err); process.exit(1); });
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+client.commands = new Collection();
+
+// Carregar comandos
+const commandsPath = path.join(__dirname, 'commands');
+if (fs.existsSync(commandsPath)) {
+  fs.readdirSync(commandsPath).forEach(file => {
+    if (file.endsWith('.js')) {
+      const cmd = require(path.join(commandsPath, file));
+      client.commands.set(cmd.data?.name, cmd);
+      console.log(`✅ Command loaded: ${cmd.data?.name || file}`);
+    }
+  });
+}
+
+// Usa clientReady (aviso corrigido)
 client.once('clientReady', () => {
-    console.log(`✅ Bot online: ${client.user.tag}`);
+  console.log(`✅ Bot online: ${client.user.tag} (${client.guilds.cache.size} guilds)`);
 });
+
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isChatInputCommand()) return;
+  const cmd = client.commands.get(interaction.commandName);
+  if (!cmd) return;
+
+  try {
+    await cmd.execute(interaction);
+  } catch (err) {
+    console.error(`❌ Error in ${interaction.commandName}:`, err.message);
+    const reply = { content: 'Erro interno ao executar.', ephemeral: true };
+    interaction.replied || interaction.deferred 
+      ? interaction.followUp(reply).catch(() => {}) 
+      : interaction.reply(reply).catch(() => {});
+  }
+});
+
+async function start() {
+  try {
+    await connectDB();
+    await client.login(config.discord.token);
+  } catch (err) {
+    console.error('❌ Fatal start error:', err.message);
+    process.exit(1);
+  }
+}
+
+start();
