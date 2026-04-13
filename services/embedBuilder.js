@@ -19,7 +19,7 @@ const PANEL_COLOR = 0x000000;
 // =====================
 function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version, rawUrl, user }) {
   const embed = new EmbedBuilder()
-    .setTitle(`<a:Amarelo:1489753598681415700> {name} <a:a_rengokufire:1489753600522453063>`)
+    .setTitle(`<a:Amarelo:1489753598681415700> ${name} <a:a_rengokufire:1489753600522453063>`)
     .setColor(PANEL_COLOR)
     .setDescription(
       `> **System Advertise**\n` +
@@ -29,7 +29,7 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
       {
         name: '<a:Amarelo:1489753598681415700> Core',
         value:
-          `<a:Svideogame:1490143738121552055> **Place ID**\n\`${placeId}\n`` +
+          `<a:Svideogame:1490143738121552055> **Place ID**\n\`${placeId}\`\n` +
           `<a:developer_bot:1491655337458270268> **Version**\n\`v${version}\``,
         inline: true,
       },
@@ -47,7 +47,7 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
       },
       {
         name: '<a:1276588157927952486:1489752367074246836> Script Loader',
-        value: '```• Link Coming soon```',
+        value: '```diff\n+ Link coming soon\n```',
         inline: false,
       }
     )
@@ -135,7 +135,7 @@ function buildUpdateEmbed({ script, description, user }) {
       },
       {
         name: '<a:1276588157927952486:1489752367074246836> Script Loader',
-        value: '```• Link Coming soon```',
+        value: '```diff\n+ Link coming soon\n```',
         inline: false,
       }
     )
