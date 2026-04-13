@@ -117,7 +117,7 @@ function buildUpdateEmbed({ script, description, user }) {
     .setTitle(`<a:Z_Wwwarning:1489752851675611306> Update Log — ${script.name}`)
     .setColor(PANEL_COLOR)
     .setDescription(
-      `> <a:regras:1489752855295426852> **Patch Notes**\n` +
+      `<a:regras:1489752855295426852> **Patch Notes**\n\n` +
       `${formatDescription(description)}`
     )
     .addFields(
