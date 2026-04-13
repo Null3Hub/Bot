@@ -79,25 +79,8 @@ if (fs.existsSync(commandsPath)) {
   });
 }
 
-// Usa clientReady (aviso corrigido)
 client.once('clientReady', () => {
-  console.log(`✅ Bot online: ${client.user.tag} (${client.guilds.cache.size} guilds)`);
-});
-
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return;
-  const cmd = client.commands.get(interaction.commandName);
-  if (!cmd) return;
-
-  try {
-    await cmd.execute(interaction);
-  } catch (err) {
-    console.error(`❌ Error in ${interaction.commandName}:`, err.message);
-    const reply = { content: 'Erro interno ao executar.', ephemeral: true };
-    interaction.replied || interaction.deferred 
-      ? interaction.followUp(reply).catch(() => {}) 
-      : interaction.reply(reply).catch(() => {});
-  }
+  console.log(`✅ Bot online: ${client.user.tag}`);
 });
 
 async function start() {
