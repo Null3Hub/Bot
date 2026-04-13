@@ -19,22 +19,22 @@ const PANEL_COLOR = 0x000000;
 // =====================
 function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version, rawUrl, user }) {
   const embed = new EmbedBuilder()
-    .setTitle(`${name} <a:a_rengokufire:1489753600522453063>`)
+    .setTitle(`<a:Amarelo:1489753598681415700> {name} <a:a_rengokufire:1489753600522453063>`)
     .setColor(PANEL_COLOR)
     .setDescription(
-      `> <a:furinadance:1489753603928490035> **System Advertise**\n` +
-      `> New script registered successfully.`
+      `> **System Advertise**\n` +
+      `> New script registered successfully. <a:furinadance:1489753603928490035>`
     )
     .addFields(
       {
-        name: '<a:Verde:1489752360405434368> Core',
+        name: '<a:Amarelo:1489753598681415700> Core',
         value:
-          `<a:Svideogame:1490143738121552055> **Place ID**\n\`${placeId}\`` +
+          `<a:Svideogame:1490143738121552055> **Place ID**\n\`${placeId}\n`` +
           `<a:developer_bot:1491655337458270268> **Version**\n\`v${version}\``,
         inline: true,
       },
       {
-        name: '<a:Verde:1489752360405434368> Status',
+        name: '<a:Amarelo:1489753598681415700> Status',
         value: `${STATUS_LABEL.active}\n`,
         inline: true,
       },
@@ -52,7 +52,7 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
       }
     )
     .setFooter({
-      text: `Null Hub • Script Added`,
+      text: `<a:Amarelo:1489753598681415700> Null Hub • Script Added`,
       iconURL: user?.displayAvatarURL?.(),
     })
     .setTimestamp();
@@ -69,12 +69,12 @@ function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
     .setTitle(`<a:Z_Wwwarning:1489752851675611306> Status Changed — ${script.name}`)
     .setColor(STATUS_COLOR[newStatus] || PANEL_COLOR)
     .setDescription(
-      `> <a:HuTao_HyperYay:1489753410956693815> **System**\n` +
-      `> Script status has been modified.`
+      `> **System**\n` +
+      `> Script status has been modified. <a:HuTao_HyperYay:1489753410956693815>`
     )
     .addFields(
       {
-        name: '<a:Verde:1489752360405434368> Core',
+        name: '<a:Amarelo:1489753598681415700> Core',
         value:
           `<a:developer_bot:1491655337458270268> **ID**\n\`${script.id}\`\n` +
           `<a:Svideogame:1490143738121552055> **PLACE**\n\`${script.placeId}\``,
@@ -92,7 +92,7 @@ function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
       }
     )
     .setFooter({
-      text: `Null Hub • Script Status Changed`,
+      text: `<a:Amarelo:1489753598681415700> Null Hub • Script Status Changed`,
       iconURL: user?.displayAvatarURL?.(),
     })
     .setTimestamp();
@@ -122,14 +122,14 @@ function buildUpdateEmbed({ script, description, user }) {
     )
     .addFields(
       {
-        name: '<a:Verde:1489752360405434368> Core',
+        name: '<a:Amarelo:1489753598681415700> Core',
         value:
           `<a:Svideogame:1490143738121552055> **Place ID**\n\`${script.placeId}\`\n` +
           `<a:developer_bot:1491655337458270268> **Version**\n\`v${script.version}\``,
         inline: true,
       },
       {
-        name: '<a:Verde:1489752360405434368> Status',
+        name: '<a:Amarelo:1489753598681415700> Status',
         value: `${STATUS_LABEL[script.status] || script.status}`,
         inline: true,
       },
@@ -140,7 +140,7 @@ function buildUpdateEmbed({ script, description, user }) {
       }
     )
     .setFooter({
-      text: `Null Hub • Patch Notes -> Script Updated`,
+      text: `<a:Amarelo:1489753598681415700> Null Hub • Patch Notes -> Script Updated`,
       iconURL: user?.displayAvatarURL?.(),
     })
     .setTimestamp();
