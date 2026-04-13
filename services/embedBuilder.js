@@ -19,18 +19,18 @@ const PANEL_COLOR = 0x000000;
 // =====================
 function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version, rawUrl, user }) {
   const embed = new EmbedBuilder()
-    .setTitle(`<a:HuTao_HyperYay:1489753410956693815> ${name}`)
+    .setTitle(`${name} <a:a_rengokufire:1489753600522453063>`)
     .setColor(PANEL_COLOR)
     .setDescription(
-      `> <a:HuTao_HyperYay:1489753410956693815> **System Advertise**\n` +
-      `> New script registered successfully.\n`
+      `> <a:furinadance:1489753603928490035> **System Advertise**\n` +
+      `> New script registered successfully.`
     )
     .addFields(
       {
         name: '<a:Verde:1489752360405434368> Core',
         value:
-          `<a:Svideogame:1490143738121552055> **Place ID**\n\`${placeId}\`\n\n` +
-          `<a:id:1490148330154492024> **Version**\n\`v${version}\``,
+          `<a:Svideogame:1490143738121552055> **Place ID**\n\`${placeId}\`` +
+          `<a:developer_bot:1491655337458270268> **Version**\n\`v${version}\``,
         inline: true,
       },
       {
@@ -41,18 +41,18 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
       {
         name: '<a:Blue_Stars:1489800733229322280> Features',
         value: Array.isArray(features) && features.length > 0
-          ? features.map(f => `\`•\` ${f}`).join('\n')
-          : '`•` _No features listed_',
+          ? `\`\`\`\n${features.map(f => `• ${f}`).join('\n')}\n\`\`\``
+          : '```• No features listed```',
         inline: false,
       },
       {
-        name: '<:Fileleft:1490103841083883520> Script Loader',
+        name: '<a:1276588157927952486:1489752367074246836> Script Loader',
         value: '`•` Link Coming soon',
         inline: false,
       }
     )
     .setFooter({
-      text: `Arianth • Updated by ${user?.username || 'Unknown'}`,
+      text: `Null Hub • Script Added`,
       iconURL: user?.displayAvatarURL?.(),
     })
     .setTimestamp();
@@ -76,7 +76,7 @@ function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
       {
         name: '<a:Verde:1489752360405434368> Core',
         value:
-          `<a:id:1490148330154492024> **ID**\n\`${script.id}\`\n` +
+          `<a:developer_bot:1491655337458270268> **ID**\n\`${script.id}\`\n` +
           `<a:Svideogame:1490143738121552055> **PLACE**\n\`${script.placeId}\``,
         inline: true,
       },
@@ -92,7 +92,7 @@ function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
       }
     )
     .setFooter({
-      text: `Arianth • Updated by ${user?.username || 'Unknown'}`,
+      text: `Null Hub • Script Status Changed`,
       iconURL: user?.displayAvatarURL?.(),
     })
     .setTimestamp();
@@ -106,11 +106,11 @@ function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
 // =====================
 function buildUpdateEmbed({ script, description, user }) {
   const formatDescription = (desc) => {
-    if (!desc) return '`•` _No description_';
-    return desc
+    if (!desc) return '```• No description```';
+    return `\`\`\`\n${desc
       .split(',')
-      .map(item => `\`•\` ${item.trim()}`)
-      .join('\n');
+      .map(item => `• ${item.trim()}`)
+      .join('\n')}\n\`\`\``;
   };
 
   const embed = new EmbedBuilder()
@@ -118,14 +118,14 @@ function buildUpdateEmbed({ script, description, user }) {
     .setColor(PANEL_COLOR)
     .setDescription(
       `> <a:regras:1489752855295426852> **Patch Notes**\n` +
-      `> ${formatDescription(description)}`
+      `${formatDescription(description)}`
     )
     .addFields(
       {
         name: '<a:Verde:1489752360405434368> Core',
         value:
           `<a:Svideogame:1490143738121552055> **Place ID**\n\`${script.placeId}\`\n` +
-          `<a:id:1490148330154492024> **Version**\n\`v${script.version}\``,
+          `<a:developer_bot:1491655337458270268> **Version**\n\`v${script.version}\``,
         inline: true,
       },
       {
@@ -134,13 +134,13 @@ function buildUpdateEmbed({ script, description, user }) {
         inline: true,
       },
       {
-        name: '<:Fileleft:1490103841083883520> Script Loader',
+        name: '<a:1276588157927952486:1489752367074246836> Script Loader',
         value: '`•` Link Coming soon',
         inline: false,
       }
     )
     .setFooter({
-      text: `Arianth • Updated by ${user?.username || 'Unknown'}`,
+      text: `Null Hub • Patch Notes -> Script Updated`,
       iconURL: user?.displayAvatarURL?.(),
     })
     .setTimestamp();
