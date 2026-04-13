@@ -3,6 +3,7 @@ const { Client, GatewayIntentBits } = require('discord.js');
 const { readdirSync } = require('fs');
 const path = require('path');
 const connectDB = require('../services/mongo');
+const { checkWhitelist } = require('../utils/whitelist');
 
 const client = new Client({
   intents: [
@@ -33,6 +34,9 @@ client.once('clientReady', () => {
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
+  // ✅ WHITELIST GLOBAL — bloqueia qualquer comando para não autorizados
+  if (!checkWhitelist(interaction)) return;
+
   const command = client.commands.get(interaction.commandName);
   if (!command) return;
 
@@ -44,7 +48,6 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-// Inicia MongoDB e depois o bot
 connectDB().then(() => {
   client.login(process.env.DISCORD_TOKEN);
 }).catch(err => {
