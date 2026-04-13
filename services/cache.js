@@ -1,17 +1,26 @@
 const cache = new Map();
 
-function get(key) {
-  if (!cache.has(key)) return null;
-  const { value, expires } = cache.get(key);
+function has(key) {
+  if (!cache.has(key)) return false;
+  const { expires } = cache.get(key);
   if (Date.now() > expires) {
     cache.delete(key);
-    return null;
+    return false;
   }
-  return value;
+  return true;
 }
 
-function set(key, value, ttl = 60000) { // 60s padrão
+function get(key) {
+  if (!has(key)) return null;
+  return cache.get(key).value;
+}
+
+function set(key, value, ttl = 60000) {
   cache.set(key, { value, expires: Date.now() + ttl });
 }
 
-module.exports = { get, set };
+function del(key) {
+  cache.delete(key);
+}
+
+module.exports = { has, get, set, delete: del };
