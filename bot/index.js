@@ -53,5 +53,7 @@ connectDB().then(() => {
   client.login(process.env.DISCORD_TOKEN);
 });
 
-// Inicia API também (opcional, se quiser tudo num processo só)
-// require('../api/server'); 
+client.once('ready', () => {
+  console.log(`✅ ${client.user.tag} online`);
+  // Opcional: registrar comandos aqui se necessário
+});
