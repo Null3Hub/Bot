@@ -52,9 +52,9 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
       }
     )
     .setFooter({
-      text: `📦 Null Hub • New Script Added`
-      iconURL: user?.displayAvatarURL?.(),
-    })
+       text: `📦 Null Hub • New Script Added`,
+       iconURL: user?.displayAvatarURL?.(),
+     })
     .setTimestamp();
 
   if (image) embed.setThumbnail(image);
