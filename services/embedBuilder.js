@@ -92,7 +92,7 @@ function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
       }
     )
     .setFooter({
-      text: `📡 Null Hub • Script Status Updated`
+      text: `📡 Null Hub • Script Status Updated`,
       iconURL: user?.displayAvatarURL?.(),
     })
     .setTimestamp();
@@ -140,7 +140,7 @@ function buildUpdateEmbed({ script, description, user }) {
       }
     )
     .setFooter({
-      text: `📢 Null Hub • Patch Notes → Re-Exec to update to the latest version`
+      text: `📢 Null Hub • Patch Notes → Re-Exec to update to the latest version`,
       iconURL: user?.displayAvatarURL?.(),
     })
     .setTimestamp();
