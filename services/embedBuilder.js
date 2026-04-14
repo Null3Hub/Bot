@@ -17,11 +17,13 @@ const PANEL_COLOR = 0x000000;
 // =====================
 // ADD SCRIPT (DASHBOARD)
 // =====================
+
 function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version, rawUrl, user }) {
   const embed = new EmbedBuilder()
-    .setTitle(`<a:Amarelo:1489753598681415700> ${name} <a:a_rengokufire:1489753600522453063>`)
+    .setTitle(null)
     .setColor(PANEL_COLOR)
     .setDescription(
+      `## <a:Amarelo:1489753598681415700> ${name} <a:a_rengokufire:1489753600522453063>\n\n` +
       `> **System Advertise**\n` +
       `> New script registered successfully. <a:furinadance:1489753603928490035>`
     )
@@ -53,7 +55,7 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
     )
     .setFooter({
        text: `📦 Null Hub • New Script Added`,
-       iconURL: user?.displayAvatarURL?.(),
+       iconURL: 'https://i.imgur.com/P91MIKn.png',
      })
     .setTimestamp();
 
@@ -66,9 +68,10 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
 // =====================
 function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
   const embed = new EmbedBuilder()
-    .setTitle(`<a:Z_Wwwarning:1489752851675611306> Status Changed — ${script.name}`)
+    .setTitle(null)
     .setColor(STATUS_COLOR[newStatus] || PANEL_COLOR)
     .setDescription(
+      `## <a:Z_Wwwarning:1489752851675611306> Status Changed — ${script.name}\n\n` +
       `> **System**\n` +
       `> Script status has been modified. <a:HuTao_HyperYay:1489753410956693815>`
     )
@@ -93,7 +96,7 @@ function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
     )
     .setFooter({
       text: `📡 Null Hub • Script Status Updated`,
-      iconURL: user?.displayAvatarURL?.(),
+      iconURL: 'https://i.imgur.com/P91MIKn.png',
     })
     .setTimestamp();
 
@@ -114,9 +117,10 @@ function buildUpdateEmbed({ script, description, user }) {
   };
 
   const embed = new EmbedBuilder()
-    .setTitle(`<a:Z_Wwwarning:1489752851675611306> Update Log — ${script.name}`)
+    .setTitle(null)
     .setColor(PANEL_COLOR)
     .setDescription(
+      `## <a:Z_Wwwarning:1489752851675611306> Update Log — ${script.name}`\n\n` +
       `<a:regras:1489752855295426852> **Patch Notes**\n\n` +
       `${formatDescription(description)}`
     )
@@ -130,7 +134,7 @@ function buildUpdateEmbed({ script, description, user }) {
       },
       {
         name: '<a:Amarelo:1489753598681415700> Status',
-        value: `${STATUS_LABEL[script.status] || script.status}`,
+        value: `${STATUS_LABEL[script.status] || '⚪ Unknown'}`,
         inline: true,
       },
       {
@@ -141,7 +145,7 @@ function buildUpdateEmbed({ script, description, user }) {
     )
     .setFooter({
       text: `📢 Null Hub • Patch Notes → Re-Exec to update to the latest version`,
-      iconURL: user?.displayAvatarURL?.(),
+      iconURL: 'https://i.imgur.com/P91MIKn.png',
     })
     .setTimestamp();
 
