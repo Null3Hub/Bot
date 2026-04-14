@@ -72,8 +72,8 @@ function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
     .setColor(STATUS_COLOR[newStatus] || PANEL_COLOR)
     .setDescription(
       `# <a:Z_Wwwarning:1489752851675611306> Status Changed — ${script.name}\n\n\n` +
-      `> **System**\n` +
-      `> Script status has been modified. <a:HuTao_HyperYay:1489753410956693815>`
+      `> <a:sininho:1489752365098729592> **System**\n` +
+      `> Script status has been modified. <a:loading:1489752853395411074>`
     )
     .addFields(
       {
