@@ -54,7 +54,7 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
       }
     )
     .setFooter({
-       text: `Null Hub • New Script Added`,
+       text: 'Null Hub • New Script Available -> Enjoy!',
        iconURL: 'https://i.imgur.com/P91MIKn.png',
      })
     .setTimestamp();
