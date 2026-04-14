@@ -120,7 +120,7 @@ function buildUpdateEmbed({ script, description, user }) {
     .setTitle(null)
     .setColor(PANEL_COLOR)
     .setDescription(
-       `## <a:Z_Wwwarning:1489752851675611306> Update Log — ${script.name}\n\n` +
+       `# <a:Z_Wwwarning:1489752851675611306> Update Log — ${script.name}\n\n\n` +
        `<a:regras:1489752855295426852> **Patch Notes**\n\n` +
        `${formatDescription(description)}`
      )
@@ -144,7 +144,7 @@ function buildUpdateEmbed({ script, description, user }) {
       }
     )
     .setFooter({
-      text: `📢 Null Hub • Patch Notes → Re-Exec to update to the latest version`,
+      text: `Null Hub • Patch Notes → Re-Exec to update to the latest version`,
       iconURL: 'https://i.imgur.com/P91MIKn.png',
     })
     .setTimestamp();
