@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Script = require('../../models/Script');
 
-// GET /api/list
 router.get('/', async (req, res) => {
-  const scripts = await Script.find({ status: 'active' })
-    .select('name placeId features version')
+  const scripts = await Script.find()
+    .select('name placeId features version status image')
     .sort({ name: 1 })
     .lean();
 
