@@ -14,9 +14,9 @@ const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
       'http://localhost:3000',           // Dev frontend
-      'http://127.0.0.1:3000',           // Dev frontend alternativo
+      'website-production-ef6e.up.railway.app',           // Dev frontend alternativo
       process.env.FRONTEND_URL,          // Produção: ex: https://nullhub-site.up.railway.app
-      undefined                          // Permite requests sem origin (Postman, curl, mobile apps)
+      undefined                          // Permite requests sem origin (Poastman, curl, mobile apps)
     ].filter(Boolean); // Remove undefined se FRONTEND_URL não estiver setado
     
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
