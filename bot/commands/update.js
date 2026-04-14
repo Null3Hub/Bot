@@ -10,17 +10,19 @@ module.exports = {
     .addStringOption(o => o.setName('scriptid').setDescription('ID do script').setRequired(true))
     .addStringOption(o => o.setName('description').setDescription('Descrição').setRequired(true))
     .addAttachmentOption(o => o.setName('file').setDescription('Novo arquivo (opcional)').setRequired(false)),
-  
+
   async execute(interaction) {
-    await interaction.deferReply();
-    const scriptId = interaction.options.getString('scriptid');
+    // ✅ Resposta ephemeral — só o usuário vê
+    await interaction.deferReply({ ephemeral: true });
+
+    const scriptId   = interaction.options.getString('scriptid');
     const description = interaction.options.getString('description');
-    const file = interaction.options.getAttachment('file');
+    const file        = interaction.options.getAttachment('file');
 
     const script = await Script.findOne({ id: scriptId });
-    if (!script) return interaction.editReply('❌ Script não encontrado.');
+    if (!script) return interaction.editReply('❌ Script não encontrado. Verifique o ID.');
 
-    let rawUrl = script.rawUrl;
+    let rawUrl     = script.rawUrl;
     let newVersion = script.version;
 
     // Se enviou arquivo novo, commita no GitHub
@@ -28,29 +30,39 @@ module.exports = {
       const content = await fetch(file.url).then(r => r.text());
       try {
         const githubResult = await commitScript({
-          placeId: script.placeId,
-          content: content
+          placeId:  script.placeId,
+          content:  content,
+          gameName: script.name
         });
         rawUrl = githubResult.rawUrl;
         newVersion++;
       } catch (err) {
-        return interaction.editReply('❌ Falha no GitHub.');
+        console.error('[UPDATE] GitHub error:', err);
+        return interaction.editReply('❌ Falha ao enviar arquivo para o GitHub.');
       }
     }
 
-    // Atualiza Mongo
-    script.rawUrl = rawUrl;
+    // Atualiza MongoDB
+    script.rawUrl  = rawUrl;
     script.version = newVersion;
     script.logs.push({
-      type: 'update',
+      type:        'update',
       description,
-      date: new Date(),
-      by: interaction.user.id,
-      version: newVersion
+      date:        new Date(),
+      by:          interaction.user.id,
+      version:     newVersion
     });
     await script.save();
 
     const embed = buildUpdateEmbed({ script, description, user: interaction.user });
-    await interaction.editReply({ embeds: [embed] });
+
+    // ✅ Envia embed no mesmo canal que o /addscript
+    const channel = interaction.client.channels.cache.get(process.env.DISCORD_CHANNEL_ID);
+    if (channel) await channel.send({ embeds: [embed] });
+
+    // ✅ Resposta privada para o usuário
+    await interaction.editReply({
+      content: `✅ Script **${script.name}** atualizado para v${newVersion}!`
+    });
   }
 };
