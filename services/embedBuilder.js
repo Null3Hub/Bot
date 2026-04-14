@@ -23,7 +23,7 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
     .setTitle(null)
     .setColor(PANEL_COLOR)
     .setDescription(
-      `## <a:Amarelo:1489753598681415700> ${name} <a:a_rengokufire:1489753600522453063>\n\n` +
+      `# <a:Amarelo:1489753598681415700> ${name} <a:a_rengokufire:1489753600522453063>\n\n\n` +
       `> **System Advertise**\n` +
       `> New script registered successfully. <a:furinadance:1489753603928490035>`
     )
@@ -54,7 +54,7 @@ function buildAddScriptEmbed({ name, scriptId, placeId, image, features, version
       }
     )
     .setFooter({
-       text: `📦 Null Hub • New Script Added`,
+       text: `Null Hub • New Script Added`,
        iconURL: 'https://i.imgur.com/P91MIKn.png',
      })
     .setTimestamp();
@@ -71,7 +71,7 @@ function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
     .setTitle(null)
     .setColor(STATUS_COLOR[newStatus] || PANEL_COLOR)
     .setDescription(
-      `## <a:Z_Wwwarning:1489752851675611306> Status Changed — ${script.name}\n\n` +
+      `# <a:Z_Wwwarning:1489752851675611306> Status Changed — ${script.name}\n\n\n` +
       `> **System**\n` +
       `> Script status has been modified. <a:HuTao_HyperYay:1489753410956693815>`
     )
@@ -95,7 +95,7 @@ function buildStatusEmbed({ script, oldStatus, newStatus, user }) {
       }
     )
     .setFooter({
-      text: `📡 Null Hub • Script Status Updated`,
+      text: `Null Hub • Script Status Updated`,
       iconURL: 'https://i.imgur.com/P91MIKn.png',
     })
     .setTimestamp();
