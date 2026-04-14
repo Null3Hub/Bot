@@ -120,10 +120,10 @@ function buildUpdateEmbed({ script, description, user }) {
     .setTitle(null)
     .setColor(PANEL_COLOR)
     .setDescription(
-      `## <a:Z_Wwwarning:1489752851675611306> Update Log — ${script.name}`\n\n` +
-      `<a:regras:1489752855295426852> **Patch Notes**\n\n` +
-      `${formatDescription(description)}`
-    )
+       `## <a:Z_Wwwarning:1489752851675611306> Update Log — ${script.name}\n\n` +
+       `<a:regras:1489752855295426852> **Patch Notes**\n\n` +
+       `${formatDescription(description)}`
+     )
     .addFields(
       {
         name: '<a:Amarelo:1489753598681415700> Core',
