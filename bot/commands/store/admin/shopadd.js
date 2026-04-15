@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, MessageFlags, PermissionFlagsBits } = require('discord.js');
 const Product = require('../../../../models/store/Product');
-const { v4: uuidv4 } = require('uuid');
 const AuditService = require('../../../../services/store/auditService');
 
 module.exports = {
