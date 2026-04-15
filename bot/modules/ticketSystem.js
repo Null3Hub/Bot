@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
 const langs = require('../config/languages.json');
 const pays = require('../config/payments.json');
 const { createTicketChannel } = require('../utils/channelManager');
@@ -35,8 +35,10 @@ async function handlePaymentSelection(interaction) {
   state.clear(interaction.user.id);
 
   await interaction.reply({ 
-    content: langs[lang]?.ticketCreated.replace('{channel}', channel.toString()).replace('{user}', interaction.user.toString()), 
-    ephemeral: true 
+    content: langs[lang]?.ticketCreated
+      .replace('{channel}', channel.toString())
+      .replace('{user}', interaction.user.toString()),
+    flags: MessageFlags.Ephemeral
   });
 
   const initialMsg = langs[lang]?.initialMsg || 'Welcome.';
