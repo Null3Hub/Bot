@@ -9,7 +9,11 @@ function getLangMenu() {
     new StringSelectMenuBuilder()
       .setCustomId('select:lang')
       .setPlaceholder('🌍 Select Language / Selecione o Idioma')
-      .addOptions(Object.values(langs).map(l => ({ label: l.label, value: l.value })))
+      .addOptions(
+        Object.values(langs)
+          .filter(l => l.label && l.value) // evita undefined
+          .map(l => ({ label: l.label, value: l.value }))
+      )
   );
 }
 
