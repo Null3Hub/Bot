@@ -3,7 +3,7 @@ const Product = require('../../../models/store/Product');
 const { buildProductEmbed } = require('../../../services/store/embedHelper');
 
 module.exports = {
-   new SlashCommandBuilder()
+   data: new SlashCommandBuilder()
     .setName('shop')
     .setDescription('Browse available products in the store.')
     .addStringOption(opt => opt.setName('category').setDescription('Filter by category').setRequired(false)),
