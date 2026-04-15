@@ -36,8 +36,6 @@ for (const filePath of commandFiles) {
     console.warn(`⚠️ O comando em ${filePath} está sem "data" ou "execute".`);
   }
 }
-console.log("📂 Comandos encontrados:");
-commandFiles.forEach(file => console.log(file));
 
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
