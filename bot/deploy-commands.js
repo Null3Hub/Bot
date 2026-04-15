@@ -5,18 +5,46 @@ const path = require('path');
 
 const commands = [];
 const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(f => f.endsWith('.js'));
 
-for (const file of commandFiles) {
-  const command = require(path.join(commandsPath, file));
-  if (command.data) commands.push(command.data.toJSON());
+// Função para buscar arquivos recursivamente
+function getCommandFiles(dir) {
+  let results = [];
+  const files = fs.readdirSync(dir);
+
+  for (const file of files) {
+    const filePath = path.join(dir, file);
+    const stat = fs.statSync(filePath);
+
+    if (stat.isDirectory()) {
+      results = results.concat(getCommandFiles(filePath));
+    } else if (file.endsWith('.js')) {
+      results.push(filePath);
+    }
+  }
+
+  return results;
 }
+
+const commandFiles = getCommandFiles(commandsPath);
+
+for (const filePath of commandFiles) {
+  const command = require(filePath);
+  
+  if ('data' in command && 'execute' in command) {
+    commands.push(command.data.toJSON());
+  } else {
+    console.warn(`⚠️ O comando em ${filePath} está sem "data" ou "execute".`);
+  }
+}
+console.log("📂 Comandos encontrados:");
+commandFiles.forEach(file => console.log(file));
 
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
   try {
     console.log(`🔄 Registrando ${commands.length} slash commands...`);
+
     await rest.put(
       Routes.applicationGuildCommands(
         process.env.DISCORD_CLIENT_ID,
@@ -24,6 +52,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
       ),
       { body: commands }
     );
+
     console.log('✅ Slash commands registrados com sucesso.');
   } catch (err) {
     console.error('❌ Erro ao registrar commands:', err);
