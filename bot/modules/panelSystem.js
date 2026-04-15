@@ -1,12 +1,15 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags } = require('discord.js');
 
 async function sendConfigPanel(interaction) {
+  await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+  
   const row = new ActionRowBuilder().addComponents(
     new ButtonBuilder().setCustomId('panel:configure').setLabel('⚙️ Configure Embed').setStyle(ButtonStyle.Primary),
     new ButtonBuilder().setCustomId('panel:info_modal').setLabel('ℹ️ Set Info JSON').setStyle(ButtonStyle.Secondary),
     new ButtonBuilder().setCustomId('panel:send').setLabel('📤 Send to Channel').setStyle(ButtonStyle.Success)
   );
-  await interaction.editReply({ content: '🛠️ **Painel de Configuração**\nConfigure o embed e envie para o canal.', components: [row], ephemeral: true });
+
+  await interaction.editReply({ content: '🛠️ **Painel de Configuração**\nConfigure o embed e envie para o canal.', components: [row] });
 }
 
 function getConfigModal() {
