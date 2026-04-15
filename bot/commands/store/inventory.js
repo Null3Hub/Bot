@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 const Inventory = require('../../../models/store/Inventory');
 const { buildInventoryEmbed } = require('../../../services/store/embedHelper');
 
