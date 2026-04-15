@@ -1,5 +1,5 @@
 const { buildPanelEmbed } = require('../../utils/embedBuilder');
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const infoBtn = require('./infoButton');
 
 let cachedEmbedData = { title: '🎫 Support & Sales', description: 'Click to begin.' };
