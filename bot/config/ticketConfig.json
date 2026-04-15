@@ -1,0 +1,6 @@
+{
+  "footerText": "NullHub Systems • {date}",
+  "categoryName": "Tickets",
+  "supportRoleId": "ROLE_ID_AQUI",
+  "channelNameFormat": "ticket-{username}"
+}
