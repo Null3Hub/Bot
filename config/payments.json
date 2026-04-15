@@ -1,0 +1,13 @@
+{
+  "pt-br": {
+    "pix": { "label": "💠 PIX", "desc": "Chave: nullhub@pix.com" },
+    "btc": { "label": "₿ BTC", "desc": "Endereço: bc1q..." },
+    "ltc": { "label": "Ł LTC", "desc": "Endereço: ltc1q..." },
+    "paypal": { "label": "🅿️ PayPal", "desc": "Email: pay@nullhub.com" }
+  },
+  "en-us": {
+    "btc": { "label": "₿ BTC", "desc": "Address: bc1q..." },
+    "ltc": { "label": "Ł LTC", "desc": "Address: ltc1q..." },
+    "paypal": { "label": "🅿️ PayPal", "desc": "Email: pay@nullhub.com" }
+  }
+}
