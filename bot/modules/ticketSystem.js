@@ -10,9 +10,10 @@ function getLangMenu() {
       .setCustomId('select:lang')
       .setPlaceholder('🌍 Select Language / Selecione o Idioma')
       .addOptions(
-        Object.values(langs)
-          .filter(l => l.label && l.value) // evita undefined
-          .map(l => ({ label: l.label, value: l.value }))
+        Object.entries(langs).map(([key, l]) => ({ 
+          label: l.label, 
+          value: key  // "pt-br" / "en-us"
+        }))
       )
   );
 }
