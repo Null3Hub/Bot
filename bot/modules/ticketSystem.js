@@ -21,8 +21,11 @@ function getLangMenu() {
 
 function getPaymentMenu(lang) {
   const options = Object.entries(pays[lang] || {}).map(([key, val]) => ({
-    label: val.label, value: key, description: val.desc.slice(0, 100)
+    label: val.label,
+    value: key,
+    description: val.desc.slice(0, 100)
   }));
+
   return new ActionRowBuilder().addComponents(
     new StringSelectMenuBuilder()
       .setCustomId('select:payment')
@@ -64,10 +67,12 @@ function buildTicketEmbed(lang, payKey, user) {
         inline: true
       },
       {
-        name: isPtBr ? '<a:5fs_clock:1494153232212168735> — `<a:5fs_clock:1494153232212168735>` Próximos Passos' : '<a:5fs_clock:1494153232212168735> — `<a:5fs_clock:1494153232212168735>` Next Steps',
+        name: isPtBr
+          ? '<a:5fs_clock:1494153232212168735> — `<a:5fs_clock:1494153232212168735>` Próximos Passos'
+          : '<a:5fs_clock:1494153232212168735> — `<a:5fs_clock:1494153232212168735>` Next Steps',
         value: isPtBr
-        ? `Após o pagamento, aguarde. Um helper estará à sua disposição caso precise de ajuda e sua key será entregue por <@&${ownerRoleId}> assim que estiver online.`
-        : `After the payment, please wait. A helper will be available if you need assistance, and your key will be delivered by <@&${ownerRoleId}> as soon as they are online.`,
+          ? `Após o pagamento, aguarde. Um helper estará à sua disposição caso precise de ajuda e sua key será entregue por <@&${ownerRoleId}> assim que estiver online.`
+          : `After the payment, please wait. A helper will be available if you need assistance, and your key will be delivered by <@&${ownerRoleId}> as soon as they are online.`,
         inline: false
       }
     )
@@ -76,8 +81,9 @@ function buildTicketEmbed(lang, payKey, user) {
 }
 
 async function handlePaymentSelection(interaction) {
-  const lang = state.get(interaction.user.id)?.lang;
+  const lang = state.get(interaction.user.id)?.lang || 'en-us'; // fallback seguro
   const pay = interaction.values[0];
+
   state.set(interaction.user.id, 'payment', pay);
 
   const channel = await createTicketChannel(interaction.guild, interaction.user);
@@ -85,17 +91,18 @@ async function handlePaymentSelection(interaction) {
 
   await interaction.followUp({ 
     content: langs[lang]?.ticketCreated
-      .replace('{channel}', channel.toString())
-      .replace('{user}', interaction.user.toString()),
+      ?.replace('{channel}', channel.toString())
+      ?.replace('{user}', interaction.user.toString()),
     flags: MessageFlags.Ephemeral
   });
 
   const ownerRoleId = config.ownerRoleId || config.supportRoleId;
 
-   const pingMsg = await channel.send({
-   content: `<@&${ownerRoleId}> <@${user.id}>`,
-    allowedMentions: { roles: [ownerRoleId], users: [user.id] }
+  const pingMsg = await channel.send({
+    content: `<@&${ownerRoleId}> <@${interaction.user.id}>`,
+    allowedMentions: { roles: [ownerRoleId], users: [interaction.user.id] }
   });
+
   await pingMsg.delete();
 
   const embed = buildTicketEmbed(lang, pay, interaction.user);
@@ -103,7 +110,7 @@ async function handlePaymentSelection(interaction) {
   const closeBtn = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
       .setCustomId('btn:close_ticket')
-      .setLabel('🔒 Close Ticket')
+      .setLabel(lang === 'pt-br' ? '🔒 Fechar Ticket' : '🔒 Close Ticket')
       .setStyle(ButtonStyle.Danger)
   );
 
