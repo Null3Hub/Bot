@@ -1,13 +1,13 @@
 {
   "pt-br": {
-    "pix": { "label": "💠 PIX", "desc": "Chave: nullhub@pix.com" },
-    "btc": { "label": "₿ BTC", "desc": "Endereço: bc1q..." },
-    "ltc": { "label": "Ł LTC", "desc": "Endereço: ltc1q..." },
-    "paypal": { "label": "🅿️ PayPal", "desc": "Email: pay@nullhub.com" }
+    "pix":    { "label": "PIX",    "desc": "Paga em R$" },
+    "robux":  { "label": "Robux",  "desc": "Paga com Robux" },
+    "paypal": { "label": "PayPal", "desc": "Paga em Euro ou Dollar" },
+    "crypto": { "label": "Crypto", "desc": "Paga em LTC" }
   },
   "en-us": {
-    "btc": { "label": "₿ BTC", "desc": "Address: bc1q..." },
-    "ltc": { "label": "Ł LTC", "desc": "Address: ltc1q..." },
-    "paypal": { "label": "🅿️ PayPal", "desc": "Email: pay@nullhub.com" }
+    "robux":  { "label": "Robux",  "desc": "Pay with Robux" },
+    "paypal": { "label": "PayPal", "desc": "Pay in Euro or Dollar"},
+    "crypto": { "label": "Crypto", "desc": "Pay in Ltc" }
   }
 }
