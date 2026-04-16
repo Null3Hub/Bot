@@ -23,6 +23,8 @@ const buttonHandlers = {
   'btn:info': require('./interactions/buttons/infoButton'),
   'panel:configure': require('./interactions/buttons/configureEmbed'),
   'panel:info_modal': require('./interactions/buttons/infoModalBtn'),
+  'setembed:set_json': require('./interactions/buttons/setEmbedJson'),
+  'setembed:send':     require('./interactions/buttons/setEmbedSend'),
   'panel:send': require('./interactions/buttons/sendPanel')
 };
 
@@ -33,6 +35,7 @@ const selectHandlers = {
 
 const modalHandlers = {
   'modal:embed_config': require('./interactions/modals/embedModal'),
+  'setembed:modal_json': require('./interactions/modals/setEmbedModal'),
   'modal:info_json': require('./interactions/modals/infoJsonModal')
 };
 
