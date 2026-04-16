@@ -7,9 +7,21 @@ const state = require('./ticketState');
 const ownerRoleId = config.ownerRoleId || config.supportRoleId;
 
 const PAY_ICONS = {
-  pix:    '<:pix:1494128469204930580>',
-  paypal: '<:paypal:1494128433075195917>',
-  crypto: '<:LTC_Litecoin:1494128475739652176>'
+  pix: {
+    id: '1494128469204930580',
+    name: 'pix'
+  },
+  paypal: {
+    id: '1494128433075195917',
+    name: 'paypal'
+  },
+  crypto: {
+    id: '1494128475739652176',
+    name: 'LTC_Litecoin'
+  },
+  robux: {
+    name: '🪙'
+  }
 };
 
 function getLangMenu() {
@@ -28,15 +40,18 @@ function getLangMenu() {
 
 function getPaymentMenu(lang) {
   const options = Object.entries(pays[lang] || pays['en-us']).map(([key, val]) => ({
-    label: `${PAY_ICONS[key] || '💳'} ${val.label}`,
+    label: val.label,
     value: key,
-    description: val.desc.slice(0, 100)
+    description: val.desc.slice(0, 100),
+    emoji: PAY_ICONS[key] || { name: '💳' }
   }));
 
   return new ActionRowBuilder().addComponents(
     new StringSelectMenuBuilder()
       .setCustomId('select:payment')
-      .setPlaceholder(langs[lang]?.paymentPlaceholder || 'Choose a payment method')
+      .setPlaceholder(
+        langs[lang]?.paymentPlaceholder || 'Choose a payment method'
+      )
       .addOptions(options)
   );
 }
@@ -64,7 +79,7 @@ function buildTicketEmbed(lang, payKey, user) {
         inline: false
       },
       {
-        name: isPtBr ? '<a:1276588157927952486:1489752367074246836> Idioma' : '<a:1276588157927952486:1489752367074246836> Language',
+        name: isPtBr ? '<a:globo:1489752367074246836> Idioma' : '<a:globo:1489752367074246836> Language',
         value: langLabel,
         inline: true
       },
