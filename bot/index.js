@@ -29,9 +29,12 @@ const buttonHandlers = {
   'panel:info_modal': require('./interactions/buttons/infoModalBtn'),
   'panel:send': require('./interactions/buttons/sendPanel'),
 
-  // ✅ NOVOS BOTÕES QUE VOCÊ PEDIU
+  // ✅ Embed System Buttons
   'btn_embed_json': require('./interactions/buttons/embedJson'),
   'btn_embed_preview': require('./interactions/buttons/embedPreview'),
+  'btn_embed_cancel': require('./interactions/buttons/embedCancel'), // ✅ NOVO
+  'setembed:set_json': require('./interactions/buttons/setEmbedJson'),
+  'setembed:send': require('./interactions/buttons/setEmbedSend'),
 };
 
 const selectHandlers = {
@@ -41,7 +44,9 @@ const selectHandlers = {
 
 const modalHandlers = {
   'modal:embed_config': require('./interactions/modals/embedModal'),
-  'modal:info_json': require('./interactions/modals/infoJsonModal')
+  'modal:info_json': require('./interactions/modals/infoJsonModal'),
+  'setembed:modal_json': require('./interactions/modals/setEmbedModal'), // ✅ NOVO
+  'modal_embed_input': require('./interactions/modals/embedInputModal'), // ✅ NOVO (se necessário)
 };
 
 // =====================
@@ -57,22 +62,18 @@ function getAllCommandFiles(dir) {
 
   for (const file of files) {
     const fullPath = path.join(dir, file.name);
-
     if (file.isDirectory()) {
       commandFiles = commandFiles.concat(getAllCommandFiles(fullPath));
     } else if (file.name.endsWith('.js')) {
       commandFiles.push(fullPath);
     }
   }
-
   return commandFiles;
 }
 
 const commandFiles = getAllCommandFiles(commandsPath);
-
 for (const filePath of commandFiles) {
   const command = require(filePath);
-
   if ('data' in command && 'execute' in command) {
     client.commands.set(command.data.name, command);
     console.log(`📌 Comando carregado: /${command.data.name}`);
@@ -84,65 +85,41 @@ for (const filePath of commandFiles) {
 // =====================
 
 client.once('clientReady', () => {
-  console.log(`✅ Bot online: ${client.user.tag}`);
+  console.log(`✅ Bot online: ${client.user.username}`); // ✅ user.tag → user.username
 });
 
 client.on('interactionCreate', async interaction => {
   try {
-    // =====================
-    // COMMANDS
-    // =====================
     if (interaction.isChatInputCommand()) {
       if (!checkWhitelist(interaction)) return;
-
       const command = client.commands.get(interaction.commandName);
       if (!command) return;
-
       return await command.execute(interaction);
     }
 
-    // =====================
-    // BUTTONS
-    // =====================
     if (interaction.isButton()) {
       const handler = buttonHandlers[interaction.customId];
-
-      if (handler?.execute) {
-        return handler.execute(interaction);
-      } else {
-        console.warn(`[WARN] Botão não encontrado: ${interaction.customId}`);
-      }
+      if (handler?.execute) return handler.execute(interaction);
+      console.warn(`[WARN] Botão não encontrado: ${interaction.customId}`);
     }
 
-    // =====================
-    // SELECT MENUS
-    // =====================
     if (interaction.isStringSelectMenu()) {
       const handler = selectHandlers[interaction.customId];
       if (handler?.execute) return handler.execute(interaction);
     }
 
-    // =====================
-    // MODALS
-    // =====================
     if (interaction.isModalSubmit()) {
       const handler = modalHandlers[interaction.customId];
-
-      if (handler?.execute) {
-        return handler.execute(interaction);
-      } else {
-        console.warn(`[WARN] Modal não encontrado: ${interaction.customId}`);
-      }
+      if (handler?.execute) return handler.execute(interaction);
+      console.warn(`[WARN] Modal não encontrado: ${interaction.customId}`);
     }
 
   } catch (error) {
     console.error('Erro em interactionCreate:', error);
-
     const replyData = {
       content: '❌ Ocorreu um erro inesperado.',
-      flags: MessageFlags.Ephemeral
+      flags: MessageFlags.Ephemeral // ✅ Correto
     };
-
     if (interaction.deferred || interaction.replied) {
       await interaction.followUp(replyData).catch(() => {});
     } else {
@@ -159,10 +136,8 @@ async function startBot() {
   try {
     await connectDB();
     console.log('✅ Banco de dados conectado com sucesso.');
-
     await client.login(process.env.DISCORD_TOKEN);
     console.log('🤖 Bot conectado ao Discord.');
-
     emojiEvents(client, elist.emojiCache);
   } catch (err) {
     console.error('❌ Falha ao iniciar:', err);
