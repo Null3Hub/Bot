@@ -34,7 +34,7 @@ const buttonHandlers = {
   'btn_embed_preview': require('./interactions/buttons/embedPreview'),
   'btn_embed_cancel': require('./interactions/buttons/embedCancel'), // ✅ NOVO
   'setembed:set_json': require('./interactions/buttons/setEmbedJson'),
-  'setembed:send': require('./interactions/buttons/setEmbedSend'),
+  'setembed:send': require('./interactions/buttons/setEmbedSend')
 };
 
 const selectHandlers = {
@@ -46,7 +46,7 @@ const modalHandlers = {
   'modal:embed_config': require('./interactions/modals/embedModal'),
   'modal:info_json': require('./interactions/modals/infoJsonModal'),
   'setembed:modal_json': require('./interactions/modals/setEmbedModal'), // ✅ NOVO
-  'modal_embed_input': require('./interactions/modals/embedInputModal'), // ✅ NOVO (se necessário)
+  'modal_embed_input': require('./interactions/modals/embedJsonModal') // ✅, // ✅ NOVO (se necessário)
 };
 
 // =====================
