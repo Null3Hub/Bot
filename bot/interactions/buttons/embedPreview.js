@@ -1,26 +1,26 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
-const cache = require('../../modules/embedCache');
-const jsonToEmbed = require('../../utils/jsonToEmbed');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const embedCache = require('../../modules/embedCache');
+const { jsonToEmbed } = require('../../utils/jsonToEmbed');
 
 module.exports = {
-  customId: 'embed:preview',
+  customId: 'btn_embed_preview',
   async execute(interaction) {
-    const data = cache.get(interaction.user.id);
-    if (!data) return interaction.reply({ content: '⚠️ Nenhum JSON salvo. Use **Set JSON** primeiro.', flags: MessageFlags.Ephemeral });
+    const data = embedCache.get(interaction.user.id);
+    if (!data) return interaction.reply({ content: '⚠️ Configure o JSON primeiro.', ephemeral: true });
 
-    let embed;
     try {
-      embed = jsonToEmbed(data);
+      const embed = jsonToEmbed(data);
+      
+      const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('btn_embed_edit').setLabel('✏️ Edit JSON').setStyle(ButtonStyle.Primary),
+        new ButtonBuilder().setCustomId('btn_embed_send').setLabel('🚀 Send to Channel').setStyle(ButtonStyle.Success),
+        new ButtonBuilder().setCustomId('btn_embed_cancel').setLabel('🗑️ Cancel').setStyle(ButtonStyle.Danger)
+      );
+
+      // Atualiza a mensagem original
+      await interaction.update({ embeds: [embed], components: [row] });
     } catch (err) {
-      return interaction.reply({ content: `❌ Erro ao gerar preview: ${err.message}`, flags: MessageFlags.Ephemeral });
+      await interaction.reply({ content: `❌ Erro ao gerar preview: ${err.message}`, ephemeral: true });
     }
-
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('embed:send').setLabel('✅ Send').setStyle(ButtonStyle.Success),
-      new ButtonBuilder().setCustomId('embed:edit').setLabel('✏️ Edit').setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId('embed:cancel').setLabel('❌ Cancel').setStyle(ButtonStyle.Danger)
-    );
-
-    await interaction.reply({ embeds: [embed], components: [row], flags: MessageFlags.Ephemeral });
   }
 };
