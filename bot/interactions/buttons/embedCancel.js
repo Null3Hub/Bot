@@ -1,11 +1,10 @@
 const { MessageFlags } = require('discord.js');
-const cache = require('../../modules/embedCache');
+const embedCache = require('../../modules/embedCache');
 
 module.exports = {
-  customId: 'embed:cancel',
+  customId: 'btn_embed_cancel',
   async execute(interaction) {
-    cache.clear(interaction.user.id);
-    await interaction.update({ content: '🚫 Preview cancelado.', embeds: [], components: [] });
-    await interaction.followUp({ content: '🗑️ Cache limpo com sucesso.', flags: MessageFlags.Ephemeral });
+    embedCache.delete(interaction.user.id);
+    await interaction.reply({ content: '🗑️ Sessão cancelada.', flags: MessageFlags.Ephemeral });
   }
 };
