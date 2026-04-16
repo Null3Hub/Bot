@@ -68,8 +68,8 @@ function buildTicketEmbed(lang, payKey, user) {
       },
       {
         name: isPtBr
-          ? '<a:5fs_clock:1494153232212168735> — `<a:5fs_clock:1494153232212168735>` Próximos Passos'
-          : '<a:5fs_clock:1494153232212168735> — `<a:5fs_clock:1494153232212168735>` Next Steps',
+          ? '<a:5fs_clock:1494153232212168735> Próximos Passos'
+          : '<a:5fs_clock:1494153232212168735> Next Steps',
         value: isPtBr
           ? `Após o pagamento, aguarde. Um helper estará à sua disposição caso precise de ajuda e sua key será entregue por <@&${ownerRoleId}> assim que estiver online.`
           : `After the payment, please wait. A helper will be available if you need assistance, and your key will be delivered by <@&${ownerRoleId}> as soon as they are online.`,
