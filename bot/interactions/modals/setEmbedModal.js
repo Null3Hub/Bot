@@ -10,7 +10,7 @@ module.exports = {
       parsed = JSON.parse(raw);
     } catch {
       return interaction.reply({
-        content: '❌ JSON inválido. Verifique a sintaxe e tente novamente.',
+        content: '❌ Invalid JSON. Please fix the format and try again.',
         flags: MessageFlags.Ephemeral,
       });
     }
@@ -18,7 +18,7 @@ module.exports = {
     setCache(interaction.user.id, parsed);
 
     await interaction.reply({
-      content: '✅ JSON salvo! Clique em **Send to Channel** para publicar.',
+      content: '✅ JSON saved! Now click **Send to Channel** to publish the embed.',
       flags: MessageFlags.Ephemeral,
     });
   }
