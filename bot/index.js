@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, MessageFlags } = require('discord.js');
 const { readdirSync } = require('fs');
 const path = require('path');
 const connectDB = require('../services/mongo');
@@ -23,8 +23,6 @@ const buttonHandlers = {
   'btn:info': require('./interactions/buttons/infoButton'),
   'panel:configure': require('./interactions/buttons/configureEmbed'),
   'panel:info_modal': require('./interactions/buttons/infoModalBtn'),
-  'setembed:set_json': require('./interactions/buttons/setEmbedJson'),
-  'setembed:send':     require('./interactions/buttons/setEmbedSend'),
   'panel:send': require('./interactions/buttons/sendPanel')
 };
 
@@ -35,7 +33,6 @@ const selectHandlers = {
 
 const modalHandlers = {
   'modal:embed_config': require('./interactions/modals/embedModal'),
-  'setembed:modal_json': require('./interactions/modals/setEmbedModal'),
   'modal:info_json': require('./interactions/modals/infoJsonModal')
 };
 
@@ -86,35 +83,56 @@ client.on('interactionCreate', async interaction => {
 
       return await command.execute(interaction);
     }
-    
+
     if (interaction.isButton()) {
-      const handler = buttonHandlers[customId];
-      if (handler) return handler.execute(interaction);
+      let handler = buttonHandlers[customId];
+
+      if (!handler) {
+        try {
+          handler = require(`./interactions/buttons/${customId}`);
+        } catch {}
+      }
+
+      if (handler?.execute) {
+        return handler.execute(interaction);
+      } else {
+        console.warn(`[WARN] Botão não encontrado: ${customId}`);
+      }
     }
 
     if (interaction.isStringSelectMenu()) {
       const handler = selectHandlers[customId];
-      if (handler) return handler.execute(interaction);
+      if (handler?.execute) return handler.execute(interaction);
     }
 
     if (interaction.isModalSubmit()) {
-      const handler = modalHandlers[customId];
-      if (handler) return handler.execute(interaction);
+      let handler = modalHandlers[customId];
+
+      if (!handler) {
+        try {
+          handler = require(`./interactions/modals/${customId}`);
+        } catch {}
+      }
+
+      if (handler?.execute) {
+        return handler.execute(interaction);
+      } else {
+        console.warn(`[WARN] Modal não encontrado: ${customId}`);
+      }
     }
 
   } catch (error) {
     console.error('Erro em interactionCreate:', error);
 
+    const replyData = {
+      content: '❌ Ocorreu um erro inesperado.',
+      flags: MessageFlags.Ephemeral
+    };
+
     if (interaction.deferred || interaction.replied) {
-      await interaction.followUp({
-        content: '❌ Ocorreu um erro inesperado.',
-        ephemeral: true
-      }).catch(() => {});
+      await interaction.followUp(replyData).catch(() => {});
     } else {
-      await interaction.reply({
-        content: '❌ Ocorreu um erro inesperado.',
-        ephemeral: true
-      }).catch(() => {});
+      await interaction.reply(replyData).catch(() => {});
     }
   }
 });
