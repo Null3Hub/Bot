@@ -29,7 +29,7 @@ const buttonHandlers = {
   'panel:info_modal': require('./interactions/buttons/infoModalBtn'),
   'panel:send': require('./interactions/buttons/sendPanel'),
 
-  // ✅ Embed System Buttons
+  'btn_embed_edit': require('./interactions/buttons/embedEdit'), // ✅ adicionar
   'btn_embed_json': require('./interactions/buttons/embedJson'),
   'btn_embed_preview': require('./interactions/buttons/embedPreview'),
   'btn_embed_cancel': require('./interactions/buttons/embedCancel'), // ✅ NOVO
