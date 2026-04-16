@@ -4,6 +4,7 @@ const pays = require('../config/payments.json');
 const config = require('../config/ticketConfig.json');
 const { createTicketChannel } = require('../utils/channelManager');
 const state = require('./ticketState');
+const ownerRoleId = config.ownerRoleId || config.supportRoleId;
 
 const PAY_ICONS = {
   pix:    '<:pix:1494128469204930580>',
@@ -100,11 +101,11 @@ async function handlePaymentSelection(interaction) {
       .replace('{user}', interaction.user.toString()),
     flags: MessageFlags.Ephemeral
   });
-  
-    const pingMsg = await channel.send({
-      content: `<@&${ownerRoleId}> <@${interaction.user.id}>`,
-      allowedMentions: { roles: [ownerRoleId], users: [interaction.user.id] }
-    });
+
+  const pingMsg = await channel.send({
+    content: `<@&${ownerRoleId}> <@${interaction.user.id}>`,
+    allowedMentions: { roles: [ownerRoleId], users: [interaction.user.id] }
+  });
 
   await pingMsg.delete();
   const embed = buildTicketEmbed(lang, pay, interaction.user);
