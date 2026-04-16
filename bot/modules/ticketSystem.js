@@ -90,6 +90,14 @@ async function handlePaymentSelection(interaction) {
     flags: MessageFlags.Ephemeral
   });
 
+  const ownerRoleId = config.ownerRoleId || config.supportRoleId;
+
+  const pingMsg = await channel.send({
+    content: `<@&${ownerRoleId}>`,
+    allowedMentions: { roles: [ownerRoleId] }
+  });
+  await pingMsg.delete();
+
   const embed = buildTicketEmbed(lang, pay, interaction.user);
 
   const closeBtn = new ActionRowBuilder().addComponents(
