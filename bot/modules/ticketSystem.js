@@ -35,7 +35,8 @@ async function handlePaymentSelection(interaction) {
   const channel = await createTicketChannel(interaction.guild, interaction.user);
   state.clear(interaction.user.id);
 
-  await interaction.reply({ 
+  // deferUpdate() já foi chamado antes, então usa followUp
+  await interaction.followUp({ 
     content: langs[lang]?.ticketCreated
       .replace('{channel}', channel.toString())
       .replace('{user}', interaction.user.toString()),
