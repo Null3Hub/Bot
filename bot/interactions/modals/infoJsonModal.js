@@ -1,3 +1,4 @@
+const { MessageFlags } = require('discord.js');
 const infoBtn = require('../buttons/infoButton');
 
 module.exports = {
