@@ -4,6 +4,8 @@ const { readdirSync } = require('fs');
 const path = require('path');
 const connectDB = require('../services/mongo');
 const { checkWhitelist } = require('../utils/whitelist');
+const emojiEvents = require('./events/emojiEvents');
+const elist = require('./commands/elist');
 
 const client = new Client({
   intents: [
@@ -114,9 +116,19 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-connectDB().then(() => {
-  client.login(process.env.DISCORD_TOKEN);
-}).catch(err => {
-  console.error('Falha ao iniciar:', err);
-  process.exit(1);
-});
+async function startBot() {
+  try {
+    await connectDB();
+    console.log('✅ Banco de dados conectado com sucesso.');
+
+    await client.login(process.env.DISCORD_TOKEN);
+    console.log('🤖 Bot conectado ao Discord.');
+
+    emojiEvents(client, elist.emojiCache);
+  } catch (err) {
+    console.error('❌ Falha ao iniciar:', err);
+    process.exit(1);
+  }
+}
+
+startBot();
