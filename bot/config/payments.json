@@ -2,12 +2,12 @@
   "pt-br": {
     "pix":    { "label": "PIX",    "desc": "Paga em R$" },
     "robux":  { "label": "Robux",  "desc": "Paga com Robux" },
-    "paypal": { "label": "PayPal", "desc": "Paga em Euro ou Dollar" },
+    "paypal": { "label": "PayPal", "desc": "Paga em Euro ou Dolar" },
     "crypto": { "label": "Crypto", "desc": "Paga em LTC" }
   },
   "en-us": {
     "robux":  { "label": "Robux",  "desc": "Pay with Robux" },
-    "paypal": { "label": "PayPal", "desc": "Pay in Euro or Dollar"},
+    "paypal": { "label": "PayPal", "desc": "Pay in Euro or Dolar"},
     "crypto": { "label": "Crypto", "desc": "Pay in Ltc" }
   }
 }
