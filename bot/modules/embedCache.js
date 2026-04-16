@@ -1,20 +1,25 @@
 const cache = new Map();
-const TTL = 15 * 60 * 1000; // 15 minutos
+const EXPIRY_TIME = 10 * 60 * 1000; // 10 minutos
 
 module.exports = {
-  set(userId, data) {
-    cache.set(userId, { data, expires: Date.now() + TTL });
-  },
   get(userId) {
-    const entry = cache.get(userId);
-    if (!entry) return null;
-    if (Date.now() > entry.expires) {
+    const item = cache.get(userId);
+    if (!item) return null;
+    if (Date.now() > item.expires) {
       cache.delete(userId);
       return null;
     }
-    return entry.data;
+    return item.data;
   },
-  clear(userId) {
+
+  set(userId, data) {
+    cache.set(userId, {
+      data,
+      expires: Date.now() + EXPIRY_TIME
+    });
+  },
+
+  delete(userId) {
     cache.delete(userId);
   }
 };
