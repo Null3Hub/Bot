@@ -46,28 +46,28 @@ function buildTicketEmbed(lang, payKey, user) {
 
   return new EmbedBuilder()
     .setColor('#000000')
-    .setTitle(isPtBr ? '🎫 Novo Ticket' : '🎫 New Ticket')
+    .setTitle(isPtBr ? '<a:hii:1491655623639564549> Novo Ticket' : '<a:hii:1491655623639564549> New Ticket')
     .addFields(
       {
-        name: isPtBr ? '💳 Forma de Pagamento' : '💳 Payment Method',
+        name: isPtBr ? '<a:card:1494128481091457084> Forma de Pagamento' : '<a:card:1494128481091457084> Payment Method',
         value: `${payLabel}\n\`\`\`${payDesc}\`\`\``,
         inline: false
       },
       {
-        name: isPtBr ? '🌍 Idioma' : '🌍 Language',
+        name: isPtBr ? '<a:1276588157927952486:1489752367074246836> Idioma' : '<a:1276588157927952486:1489752367074246836> Language',
         value: langLabel,
         inline: true
       },
       {
-        name: isPtBr ? '👤 Comprador' : '👤 Buyer',
+        name: isPtBr ? '<a:AU_money2:1494128483020963892> Comprador' : '<a:AU_money2:1494128483020963892> Buyer',
         value: user.toString(),
         inline: true
       },
       {
-        name: isPtBr ? '⏳ Próximos Passos' : '⏳ Next Steps',
+        name: isPtBr ? '<a:5fs_clock:1494153232212168735> — `<a:5fs_clock:1494153232212168735>` Próximos Passos' : '<a:5fs_clock:1494153232212168735> — `<a:5fs_clock:1494153232212168735>` Next Steps',
         value: isPtBr
-          ? `Aguarde após o pagamento. Sua key será entregue por <@&${ownerRoleId}>.`
-          : `Wait after the payment. Your key will be delivered by <@&${ownerRoleId}>.`,
+        ? `Após o pagamento, aguarde. Um helper estará à sua disposição caso precise de ajuda e sua key será entregue por <@&${ownerRoleId}> assim que estiver online.`
+        : `After the payment, please wait. A helper will be available if you need assistance, and your key will be delivered by <@&${ownerRoleId}> as soon as they are online.`,
         inline: false
       }
     )
