@@ -2,8 +2,7 @@ const config = require('../config/ticketConfig.json');
 
 async function createTicketChannel(guild, user) {
   const name = config.channelNameFormat.replace('{username}', user.username.toLowerCase());
-
-  // Busca o cargo de suporte
+  
   const supportRole = guild.roles.cache.get(config.supportRoleId) ||
     await guild.roles.fetch(config.supportRoleId);
     
