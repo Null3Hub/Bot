@@ -17,13 +17,21 @@ const client = new Client({
   ]
 });
 
+// =====================
+// HANDLERS
+// =====================
+
 const buttonHandlers = {
   'btn:create_ticket': require('./interactions/buttons/createTicket'),
   'btn:close_ticket': require('./interactions/buttons/closeTicket'),
   'btn:info': require('./interactions/buttons/infoButton'),
   'panel:configure': require('./interactions/buttons/configureEmbed'),
   'panel:info_modal': require('./interactions/buttons/infoModalBtn'),
-  'panel:send': require('./interactions/buttons/sendPanel')
+  'panel:send': require('./interactions/buttons/sendPanel'),
+
+  // ✅ NOVOS BOTÕES QUE VOCÊ PEDIU
+  'btn_embed_json': require('./interactions/buttons/embedJson'),
+  'btn_embed_preview': require('./interactions/buttons/embedPreview'),
 };
 
 const selectHandlers = {
@@ -35,6 +43,10 @@ const modalHandlers = {
   'modal:embed_config': require('./interactions/modals/embedModal'),
   'modal:info_json': require('./interactions/modals/infoJsonModal')
 };
+
+// =====================
+// COMMANDS
+// =====================
 
 client.commands = new Map();
 const commandsPath = path.join(__dirname, 'commands');
@@ -67,14 +79,19 @@ for (const filePath of commandFiles) {
   }
 }
 
+// =====================
+// EVENTS
+// =====================
+
 client.once('clientReady', () => {
   console.log(`✅ Bot online: ${client.user.tag}`);
 });
 
 client.on('interactionCreate', async interaction => {
-  const { customId } = interaction;
-
   try {
+    // =====================
+    // COMMANDS
+    // =====================
     if (interaction.isChatInputCommand()) {
       if (!checkWhitelist(interaction)) return;
 
@@ -84,40 +101,37 @@ client.on('interactionCreate', async interaction => {
       return await command.execute(interaction);
     }
 
+    // =====================
+    // BUTTONS
+    // =====================
     if (interaction.isButton()) {
-      let handler = buttonHandlers[customId];
-
-      if (!handler) {
-        try {
-          handler = require(`./interactions/buttons/${customId}`);
-        } catch {}
-      }
+      const handler = buttonHandlers[interaction.customId];
 
       if (handler?.execute) {
         return handler.execute(interaction);
       } else {
-        console.warn(`[WARN] Botão não encontrado: ${customId}`);
+        console.warn(`[WARN] Botão não encontrado: ${interaction.customId}`);
       }
     }
 
+    // =====================
+    // SELECT MENUS
+    // =====================
     if (interaction.isStringSelectMenu()) {
-      const handler = selectHandlers[customId];
+      const handler = selectHandlers[interaction.customId];
       if (handler?.execute) return handler.execute(interaction);
     }
 
+    // =====================
+    // MODALS
+    // =====================
     if (interaction.isModalSubmit()) {
-      let handler = modalHandlers[customId];
-
-      if (!handler) {
-        try {
-          handler = require(`./interactions/modals/${customId}`);
-        } catch {}
-      }
+      const handler = modalHandlers[interaction.customId];
 
       if (handler?.execute) {
         return handler.execute(interaction);
       } else {
-        console.warn(`[WARN] Modal não encontrado: ${customId}`);
+        console.warn(`[WARN] Modal não encontrado: ${interaction.customId}`);
       }
     }
 
@@ -136,6 +150,10 @@ client.on('interactionCreate', async interaction => {
     }
   }
 });
+
+// =====================
+// START
+// =====================
 
 async function startBot() {
   try {
