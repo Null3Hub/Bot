@@ -92,9 +92,9 @@ async function handlePaymentSelection(interaction) {
 
   const ownerRoleId = config.ownerRoleId || config.supportRoleId;
 
-  const pingMsg = await channel.send({
-    content: `<@&${ownerRoleId}>`,
-    allowedMentions: { roles: [ownerRoleId] }
+   const pingMsg = await channel.send({
+   content: `<@&${ownerRoleId}> <@${user.id}>`,
+    allowedMentions: { roles: [ownerRoleId], users: [user.id] }
   });
   await pingMsg.delete();
 
