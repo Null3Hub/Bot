@@ -33,6 +33,7 @@ const buttonHandlers = {
   'btn_embed_json': require('./interactions/buttons/embedJson'),
   'btn_embed_preview': require('./interactions/buttons/embedPreview'),
   'btn_embed_cancel': require('./interactions/buttons/embedCancel'),
+  'btn_embed_send': require('./interactions/buttons/embedSend'),
   'setembed:set_json': require('./interactions/buttons/setEmbedJson'),
   'setembed:send': require('./interactions/buttons/setEmbedSend')
 };
