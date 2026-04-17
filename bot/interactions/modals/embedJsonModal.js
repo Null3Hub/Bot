@@ -12,21 +12,19 @@ module.exports = {
       const parsed = JSON.parse(jsonStr);
       if (typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('JSON deve ser um objeto.');
 
-      // Aceita tanto { "embeds": [{...}] } quanto o objeto direto
       json = Array.isArray(parsed.embeds) ? parsed.embeds[0] : parsed;
       if (!json || typeof json !== 'object') throw new Error('Embed inválido no JSON.');
 
-      jsonToEmbed(json); // Teste de validação
+      jsonToEmbed(json);
     } catch (err) {
       return interaction.reply({ content: `❌ **Erro:** ${err.message}`, flags: MessageFlags.Ephemeral });
     }
 
     embedCache.set(interaction.user.id, json);
 
-    // Reabilita o botão Preview na mensagem original do painel
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder().setCustomId('btn_embed_json').setLabel('1. Set JSON').setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId('btn_embed_preview').setLabel('2. Preview').setStyle(ButtonStyle.Secondary).setDisabled(false), // ✅ habilitado
+      new ButtonBuilder().setCustomId('btn_embed_preview').setLabel('2. Preview').setStyle(ButtonStyle.Secondary).setDisabled(false),
       new ButtonBuilder().setCustomId('btn_embed_cancel').setLabel('Cancel').setStyle(ButtonStyle.Danger)
     );
 
