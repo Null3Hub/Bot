@@ -7,7 +7,7 @@ module.exports = {
     const modal = new ModalBuilder().setCustomId('modal_embed_input').setTitle('Configurar Embed JSON');
 
     const currentData = embedCache.get(interaction.user.id);
-    
+
     const jsonInput = new TextInputBuilder()
       .setCustomId('json_content')
       .setLabel('Cole seu JSON aqui')
@@ -16,7 +16,10 @@ module.exports = {
       .setRequired(true);
 
     if (currentData) {
-      jsonInput.setValue(JSON.stringify(currentData, null, 2));
+      const compact = JSON.stringify(currentData);
+      if (compact.length <= 4000) {
+        jsonInput.setValue(compact);
+      }
     }
 
     modal.addComponents(new ActionRowBuilder().addComponents(jsonInput));
