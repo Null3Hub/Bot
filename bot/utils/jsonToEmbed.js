@@ -7,8 +7,8 @@ function jsonToEmbed(data) {
   if (data.description) embed.setDescription(data.description);
   if (data.url) embed.setURL(data.url);
   
-  // Suporte a cores (Hex String ou Inteiro)
-  if (data.color) {
+  // Suporte a cores (Hex String ou Inteiro) — data.color !== undefined cobre color: 0 (preto)
+  if (data.color !== undefined && data.color !== null) {
     if (typeof data.color === 'string' && data.color.startsWith('#')) {
       embed.setColor(parseInt(data.color.slice(1), 16));
     } else {
