@@ -20,17 +20,17 @@ module.exports = {
       return interaction.reply({ content: `❌ **Erro:** ${err.message}`, flags: MessageFlags.Ephemeral });
     }
 
-    embedCache.set(interaction.user.id, json);
+     embedCache.set(interaction.user.id, json);
+     
+     const row = new ActionRowBuilder().addComponents(
+       new ButtonBuilder().setCustomId('btn_embed_json').setLabel('1. Set JSON').setStyle(ButtonStyle.Primary),
+       new ButtonBuilder().setCustomId('btn_embed_preview').setLabel('2. Preview').setStyle(ButtonStyle.Secondary).setDisabled(false),
+       new ButtonBuilder().setCustomId('btn_embed_cancel').setLabel('Cancel').setStyle(ButtonStyle.Danger)
+     );
 
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('btn_embed_json').setLabel('1. Set JSON').setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId('btn_embed_preview').setLabel('2. Preview').setStyle(ButtonStyle.Secondary).setDisabled(false),
-      new ButtonBuilder().setCustomId('btn_embed_cancel').setLabel('Cancel').setStyle(ButtonStyle.Danger)
-    );
-
-    await interaction.update({
-      content: '🛠️ **Painel de Embed**\n✅ JSON salvo! Clique em **2. Preview** para visualizar.',
-      components: [row]
-    });
-  }
-};
+// Modal submit não suporta .update() — usar deferUpdate + edit na mensagem original
+await interaction.deferUpdate();
+await interaction.message.edit({
+  content: '🛠️ **Painel de Embed**\n✅ JSON salvo! Clique em **2. Preview** para visualizar.',
+  components: [row]
+});
