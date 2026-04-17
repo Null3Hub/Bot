@@ -14,7 +14,7 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.GuildEmojisAndStickers,
-  ]
+  ],
 });
 
 // =====================
@@ -22,32 +22,43 @@ const client = new Client({
 // =====================
 
 const buttonHandlers = {
-  'btn:create_ticket': require('./interactions/buttons/createTicket'),
-  'btn:close_ticket': require('./interactions/buttons/closeTicket'),
-  'btn:info': require('./interactions/buttons/infoButton'),
-  'panel:configure': require('./interactions/buttons/configureEmbed'),
-  'panel:info_modal': require('./interactions/buttons/infoModalBtn'),
-  'panel:send': require('./interactions/buttons/sendPanel'),
+  // Tickets
+  'btn:create_ticket':  require('./interactions/buttons/createTicket'),
+  'btn:close_ticket':   require('./interactions/buttons/closeTicket'),
+  'btn:info':           require('./interactions/buttons/infoButton'),
+  'panel:configure':    require('./interactions/buttons/configureEmbed'),
+  'panel:info_modal':   require('./interactions/buttons/infoModalBtn'),
+  'panel:send':         require('./interactions/buttons/sendPanel'),
 
-  'btn_embed_edit': require('./interactions/buttons/embedEdit'),
-  'btn_embed_json': require('./interactions/buttons/embedJson'),
-  'btn_embed_preview': require('./interactions/buttons/embedPreview'),
-  'btn_embed_cancel': require('./interactions/buttons/embedCancel'),
-  'btn_embed_send': require('./interactions/buttons/embedSend'),
-  'setembed:set_json': require('./interactions/buttons/setEmbedJson'),
-  'setembed:send': require('./interactions/buttons/setEmbedSend')
+  // Embed builder (/setembed)
+  'btn_embed_edit':     require('./interactions/buttons/embedEdit'),
+  'btn_embed_json':     require('./interactions/buttons/embedJson'),
+  'btn_embed_preview':  require('./interactions/buttons/embedPreview'),
+  'btn_embed_roles':    require('./interactions/buttons/embedRoles'),   // ← NOVO
+  'btn_embed_send':     require('./interactions/buttons/embedSend'),
+  'btn_embed_cancel':   require('./interactions/buttons/embedCancel'),
+
+  // setembed alternativo
+  'setembed:set_json':  require('./interactions/buttons/setEmbedJson'),
+  'setembed:send':      require('./interactions/buttons/setEmbedSend'),
 };
 
+// Handlers de prefix dinâmico (customId começa com a chave)
+const prefixButtonHandlers = [
+  { prefix: 'get_role:', handler: require('./interactions/buttons/getRole') }, // ← NOVO
+];
+
 const selectHandlers = {
-  'select:lang': require('./interactions/selects/languageSelect'),
-  'select:payment': require('./interactions/selects/paymentSelect')
+  'select:lang':    require('./interactions/selects/languageSelect'),
+  'select:payment': require('./interactions/selects/paymentSelect'),
 };
 
 const modalHandlers = {
-  'modal:embed_config': require('./interactions/modals/embedModal'),
-  'modal:info_json': require('./interactions/modals/infoJsonModal'),
+  'modal:embed_config':  require('./interactions/modals/embedModal'),
+  'modal:info_json':     require('./interactions/modals/infoJsonModal'),
   'setembed:modal_json': require('./interactions/modals/setEmbedModal'),
-  'modal_embed_input': require('./interactions/modals/embedJsonModal')
+  'modal_embed_input':   require('./interactions/modals/embedJsonModal'),
+  'modal_embed_roles':   require('./interactions/modals/embedRolesModal'), // ← NOVO
 };
 
 // =====================
@@ -60,7 +71,6 @@ const commandsPath = path.join(__dirname, 'commands');
 function getAllCommandFiles(dir) {
   const files = readdirSync(dir, { withFileTypes: true });
   let commandFiles = [];
-
   for (const file of files) {
     const fullPath = path.join(dir, file.name);
     if (file.isDirectory()) {
@@ -86,7 +96,7 @@ for (const filePath of commandFiles) {
 // =====================
 
 client.once('clientReady', () => {
-  console.log(`✅ Bot online: ${client.user.username}`); // ✅ user.tag → user.username
+  console.log(`✅ Bot online: ${client.user.username}`);
 });
 
 client.on('interactionCreate', async interaction => {
@@ -99,8 +109,17 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (interaction.isButton()) {
-      const handler = buttonHandlers[interaction.customId];
-      if (handler?.execute) return handler.execute(interaction);
+      // 1. Tenta handler exato
+      const exact = buttonHandlers[interaction.customId];
+      if (exact?.execute) return exact.execute(interaction);
+
+      // 2. Tenta handlers de prefix dinâmico
+      for (const { prefix, handler } of prefixButtonHandlers) {
+        if (interaction.customId.startsWith(prefix)) {
+          return handler.execute(interaction);
+        }
+      }
+
       console.warn(`[WARN] Botão não encontrado: ${interaction.customId}`);
     }
 
@@ -114,12 +133,11 @@ client.on('interactionCreate', async interaction => {
       if (handler?.execute) return handler.execute(interaction);
       console.warn(`[WARN] Modal não encontrado: ${interaction.customId}`);
     }
-
   } catch (error) {
     console.error('Erro em interactionCreate:', error);
     const replyData = {
       content: '❌ Ocorreu um erro inesperado.',
-      flags: MessageFlags.Ephemeral // ✅ Correto
+      flags: MessageFlags.Ephemeral,
     };
     if (interaction.deferred || interaction.replied) {
       await interaction.followUp(replyData).catch(() => {});
