@@ -1,4 +1,3 @@
-// bot/interactions/modals/embedJsonModal.js
 const { MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const embedCache = require('../../modules/embedCache');
 const { jsonToEmbed } = require('../../utils/jsonToEmbed');
@@ -29,12 +28,9 @@ module.exports = {
       new ButtonBuilder().setCustomId('btn_embed_cancel').setLabel('Cancel').setStyle(ButtonStyle.Danger)
     );
 
-    // Modal submit não suporta .update() — usa reply + edita a mensagem original
-    await interaction.reply({ content: '✅ JSON salvo!', flags: MessageFlags.Ephemeral });
-
-    await interaction.message?.edit({
+    await interaction.update({
       content: '🛠️ **Painel de Embed**\n✅ JSON salvo! Clique em **2. Preview** para visualizar.',
       components: [row]
-    }).catch(() => {});
+    });
   }
 };
