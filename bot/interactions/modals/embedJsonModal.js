@@ -9,8 +9,13 @@ module.exports = {
     let json;
 
     try {
-      json = JSON.parse(jsonStr);
-      if (typeof json !== 'object' || Array.isArray(json)) throw new Error('JSON deve ser um objeto.');
+      const parsed = JSON.parse(jsonStr);
+      if (typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('JSON deve ser um objeto.');
+
+      // Aceita tanto { "embeds": [{...}] } quanto o objeto direto
+      json = Array.isArray(parsed.embeds) ? parsed.embeds[0] : parsed;
+      if (!json || typeof json !== 'object') throw new Error('Embed inválido no JSON.');
+
       jsonToEmbed(json); // Teste de validação
     } catch (err) {
       return interaction.reply({ content: `❌ **Erro:** ${err.message}`, flags: MessageFlags.Ephemeral });
