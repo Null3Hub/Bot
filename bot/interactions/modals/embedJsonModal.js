@@ -1,4 +1,4 @@
-const { MessageFlags } = require('discord.js');
+const { MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const embedCache = require('../../modules/embedCache');
 const { jsonToEmbed } = require('../../utils/jsonToEmbed');
 
@@ -18,9 +18,16 @@ module.exports = {
 
     embedCache.set(interaction.user.id, json);
 
-    await interaction.reply({
-      content: '✅ JSON salvo com sucesso! Agora clique em **Preview**.',
-      flags: MessageFlags.Ephemeral
+    // Reabilita o botão Preview na mensagem original do painel
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId('btn_embed_json').setLabel('1. Set JSON').setStyle(ButtonStyle.Primary),
+      new ButtonBuilder().setCustomId('btn_embed_preview').setLabel('2. Preview').setStyle(ButtonStyle.Secondary).setDisabled(false), // ✅ habilitado
+      new ButtonBuilder().setCustomId('btn_embed_cancel').setLabel('Cancel').setStyle(ButtonStyle.Danger)
+    );
+
+    await interaction.update({
+      content: '🛠️ **Painel de Embed**\n✅ JSON salvo! Clique em **2. Preview** para visualizar.',
+      components: [row]
     });
   }
 };
