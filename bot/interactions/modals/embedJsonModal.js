@@ -28,8 +28,9 @@ module.exports = {
       new ButtonBuilder().setCustomId('btn_embed_cancel').setLabel('Cancel').setStyle(ButtonStyle.Danger)
     );
 
+    // Modal submit sobre ephemeral: usar editReply via webhook da interação que abriu o modal
     await interaction.deferUpdate();
-    await interaction.message.edit({
+    await interaction.editReply({
       content: '🛠️ **Painel de Embed**\n✅ JSON salvo! Clique em **2. Preview** para visualizar.',
       components: [row]
     });
