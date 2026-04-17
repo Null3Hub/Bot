@@ -29,10 +29,10 @@ const buttonHandlers = {
   'panel:info_modal': require('./interactions/buttons/infoModalBtn'),
   'panel:send': require('./interactions/buttons/sendPanel'),
 
-  'btn_embed_edit': require('./interactions/buttons/embedEdit'), // ✅ adicionar
+  'btn_embed_edit': require('./interactions/buttons/embedEdit'),
   'btn_embed_json': require('./interactions/buttons/embedJson'),
   'btn_embed_preview': require('./interactions/buttons/embedPreview'),
-  'btn_embed_cancel': require('./interactions/buttons/embedCancel'), // ✅ NOVO
+  'btn_embed_cancel': require('./interactions/buttons/embedCancel'),
   'setembed:set_json': require('./interactions/buttons/setEmbedJson'),
   'setembed:send': require('./interactions/buttons/setEmbedSend')
 };
@@ -45,8 +45,8 @@ const selectHandlers = {
 const modalHandlers = {
   'modal:embed_config': require('./interactions/modals/embedModal'),
   'modal:info_json': require('./interactions/modals/infoJsonModal'),
-  'setembed:modal_json': require('./interactions/modals/setEmbedModal'), // ✅ NOVO
-  'modal_embed_input': require('./interactions/modals/embedJsonModal') // ✅, // ✅ NOVO (se necessário)
+  'setembed:modal_json': require('./interactions/modals/setEmbedModal'),
+  'modal_embed_input': require('./interactions/modals/embedJsonModal')
 };
 
 // =====================
