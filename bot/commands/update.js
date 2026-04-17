@@ -1,4 +1,9 @@
-const { SlashCommandBuilder } = require('discord.js');
+const {
+  SlashCommandBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 const { commitScript } = require('../../services/github');
 const Script = require('../../models/Script');
 const { buildUpdateEmbed } = require('../../services/embedBuilder');
@@ -7,12 +12,17 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('update')
     .setDescription('Atualiza script existente')
-    .addStringOption(o => o.setName('scriptid').setDescription('ID do script').setRequired(true))
-    .addStringOption(o => o.setName('description').setDescription('Descrição').setRequired(true))
-    .addAttachmentOption(o => o.setName('file').setDescription('Novo arquivo (opcional)').setRequired(false)),
+    .addStringOption(o =>
+      o.setName('scriptid').setDescription('ID do script').setRequired(true),
+    )
+    .addStringOption(o =>
+      o.setName('description').setDescription('Descrição').setRequired(true),
+    )
+    .addAttachmentOption(o =>
+      o.setName('file').setDescription('Novo arquivo (opcional)').setRequired(false),
+    ),
 
   async execute(interaction) {
-    // ✅ Resposta ephemeral — só o usuário vê
     await interaction.deferReply({ ephemeral: true });
 
     const scriptId   = interaction.options.getString('scriptid');
@@ -25,14 +35,13 @@ module.exports = {
     let rawUrl     = script.rawUrl;
     let newVersion = script.version;
 
-    // Se enviou arquivo novo, commita no GitHub
     if (file) {
       const content = await fetch(file.url).then(r => r.text());
       try {
         const githubResult = await commitScript({
           placeId:  script.placeId,
           content:  content,
-          gameName: script.name
+          gameName: script.name,
         });
         rawUrl = githubResult.rawUrl;
         newVersion++;
@@ -42,7 +51,6 @@ module.exports = {
       }
     }
 
-    // Atualiza MongoDB
     script.rawUrl  = rawUrl;
     script.version = newVersion;
     script.logs.push({
@@ -50,19 +58,49 @@ module.exports = {
       description,
       date:        new Date(),
       by:          interaction.user.id,
-      version:     newVersion
+      version:     newVersion,
     });
     await script.save();
 
     const embed = buildUpdateEmbed({ script, description, user: interaction.user });
 
-    // ✅ Envia embed no mesmo canal que o /addscript
-    const channel = interaction.client.channels.cache.get(process.env.DISCORD_CHANNEL_ID);
-    if (channel) await channel.send({ embeds: [embed] });
+    // Busca ou cria cargo "update-ping" automaticamente
+    let pingRole = interaction.guild.roles.cache.find(r => r.name === 'update-ping');
+    if (!pingRole) {
+      try {
+        pingRole = await interaction.guild.roles.create({
+          name: 'update-ping',
+          mentionable: true,
+          reason: 'Cargo criado automaticamente pelo sistema de update-ping',
+        });
+        console.log(`[UPDATE] Cargo update-ping criado: ${pingRole.id}`);
+      } catch (err) {
+        console.error('[UPDATE] Falha ao criar cargo update-ping:', err);
+      }
+    }
 
-    // ✅ Resposta privada para o usuário
+    // Botão de Ping Me
+    const pingRow = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId(`get_role:${pingRole?.id}`)
+        .setLabel('🔔 Ping Me')
+        .setStyle(ButtonStyle.Secondary),
+    );
+
+    const channel = interaction.client.channels.cache.get(process.env.DISCORD_CHANNEL_ID);
+    if (channel) {
+      // Menciona os que já têm o cargo + envia embed com botão
+      const mention = pingRole ? `<@&${pingRole.id}>` : '';
+      await channel.send({
+        content: mention || undefined,
+        embeds: [embed],
+        components: [pingRow],
+        allowedMentions: { roles: pingRole ? [pingRole.id] : [] },
+      });
+    }
+
     await interaction.editReply({
-      content: `✅ Script **${script.name}** atualizado para v${newVersion}!`
+      content: `✅ Script **${script.name}** atualizado para v${newVersion}!`,
     });
-  }
+  },
 };
