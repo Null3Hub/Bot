@@ -1,4 +1,9 @@
-const { MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+  MessageFlags,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 const embedCache = require('../../modules/embedCache');
 const { jsonToEmbed } = require('../../utils/jsonToEmbed');
 
@@ -10,29 +15,49 @@ module.exports = {
 
     try {
       const parsed = JSON.parse(jsonStr);
-      if (typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('JSON deve ser um objeto.');
+      if (typeof parsed !== 'object' || Array.isArray(parsed))
+        throw new Error('JSON deve ser um objeto.');
 
       json = Array.isArray(parsed.embeds) ? parsed.embeds[0] : parsed;
-      if (!json || typeof json !== 'object') throw new Error('Embed inválido no JSON.');
+      if (!json || typeof json !== 'object')
+        throw new Error('Embed inválido no JSON.');
 
-      jsonToEmbed(json);
+      jsonToEmbed(json); // valida sem lançar
     } catch (err) {
-      return interaction.reply({ content: `❌ **Erro:** ${err.message}`, flags: MessageFlags.Ephemeral });
+      return interaction.reply({
+        content: `❌ **Erro:** ${err.message}`,
+        flags: MessageFlags.Ephemeral,
+      });
     }
 
     embedCache.set(interaction.user.id, json);
 
     const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('btn_embed_json').setLabel('1. Set JSON').setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId('btn_embed_preview').setLabel('2. Preview').setStyle(ButtonStyle.Secondary).setDisabled(false),
-      new ButtonBuilder().setCustomId('btn_embed_cancel').setLabel('Cancel').setStyle(ButtonStyle.Danger)
+      new ButtonBuilder()
+        .setCustomId('btn_embed_json')
+        .setLabel('1. Set JSON')
+        .setStyle(ButtonStyle.Primary),
+      new ButtonBuilder()
+        .setCustomId('btn_embed_preview')
+        .setLabel('2. Preview')
+        .setStyle(ButtonStyle.Secondary)
+        .setDisabled(false),
+      new ButtonBuilder()
+        .setCustomId('btn_embed_roles')
+        .setLabel('3. Get Role (opcional)')
+        .setStyle(ButtonStyle.Secondary)
+        .setDisabled(false),
+      new ButtonBuilder()
+        .setCustomId('btn_embed_cancel')
+        .setLabel('Cancel')
+        .setStyle(ButtonStyle.Danger),
     );
 
-    // Modal submit sobre ephemeral: usar editReply via webhook da interação que abriu o modal
     await interaction.deferUpdate();
     await interaction.editReply({
-      content: '🛠️ **Painel de Embed**\n✅ JSON salvo! Clique em **2. Preview** para visualizar.',
-      components: [row]
+      content:
+        '🛠️ **Painel de Embed**\n✅ JSON salvo! Clique em **2. Preview** para visualizar ou **3. Get Role** para adicionar cargo.',
+      components: [row],
     });
-  }
+  },
 };
